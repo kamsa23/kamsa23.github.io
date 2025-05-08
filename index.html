@@ -3,46 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Find Your Location</title>
+    <title>IP Lookup Tool</title>
 </head>
 <body>
-    <h1>Your Location Details:</h1>
+    <h1>IP Lookup Tool</h1>
 
-    <h2>🌐 IP-Based Location</h2>
-    <p><strong>IP Address:</strong> <span id="ip">Detecting...</span></p>
-    <p><strong>Estimated Address:</strong> <span id="ip-address">Detecting...</span></p>
-    <p><strong>City:</strong> <span id="ip-city">Detecting...</span></p>
-    <p><strong>Region:</strong> <span id="ip-region">Detecting...</span></p>
-    <p><strong>Country:</strong> <span id="ip-country">Detecting...</span></p>
-    <p><strong>Timezone:</strong> <span id="ip-timezone">Detecting...</span></p>
+    <h2>🌐 Your IP Details</h2>
+    <p><strong>IP Address:</strong> <span id="user-ip">Detecting...</span></p>
+    <p><strong>Country:</strong> <span id="user-country">Detecting...</span></p>
+
+    <h2>🔍 Custom IP Lookup</h2>
+    <input type="text" id="custom-ip" placeholder="Enter an IP address">
+    <button onclick="lookupCustomIP()">Lookup IP</button>
+
+    <p><strong>Custom IP Country:</strong> <span id="custom-country">Waiting for input...</span></p>
 
     <script>
-        function getIPLocation() {
+        function getUserIP() {
             fetch("https://api.ipify.org?format=json")
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById("ip").innerHTML = data.ip;
-                    
-                    // Get location details from Geoapify
-                    fetch(`https://api.geoapify.com/v1/ipinfo?apiKey=64ddd6595a9b4471b7bd705a9c2ce8f5`)
-                        .then(response => response.json())
-                        .then(data => {
-                            document.getElementById("ip-address").innerHTML = data.location.address || "Not available";
-                            document.getElementById("ip-city").innerHTML = data.city || "Not available";
-                            document.getElementById("ip-region").innerHTML = data.state || "Not available";
-                            document.getElementById("ip-country").innerHTML = data.country || "Not available";
-                            document.getElementById("ip-timezone").innerHTML = data.timezone.name || "Not available";
-                        })
-                        .catch(error => {
-                            document.getElementById("ip-address").innerHTML = "Error fetching IP location details.";
-                        });
+                    document.getElementById("user-ip").innerHTML = data.ip;
+                    lookupIPDetails(data.ip, "user-country");
                 })
                 .catch(error => {
-                    document.getElementById("ip").innerHTML = "Error fetching IP.";
+                    document.getElementById("user-ip").innerHTML = "Error fetching IP.";
                 });
         }
 
-        getIPLocation();
+        function lookupIPDetails(ip, elementId) {
+            fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=95599cccebed43758369a16fe62da057&ip=${ip}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById(elementId).innerHTML = data.country_name || "Not available";
+                })
+                .catch(error => {
+                    document.getElementById(elementId).innerHTML = "Error fetching country.";
+                });
+        }
+
+        function lookupCustomIP() {
+            let customIP = document.getElementById("custom-ip").value;
+            if (customIP) {
+                lookupIPDetails(customIP, "custom-country");
+            } else {
+                document.getElementById("custom-country").innerHTML = "Please enter an IP.";
+            }
+        }
+
+        getUserIP();
     </script>
 </body>
 </html>
