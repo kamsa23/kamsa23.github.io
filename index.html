@@ -33,12 +33,12 @@
             let lon = position.coords.longitude;
             document.getElementById("gps-coordinates").innerHTML = `${lat}, ${lon}`;
 
-            // Get address using FreeWebAPI (No API key needed)
-            fetch(`https://freewebapi.com/api/location?lat=${lat}&lon=${lon}`)
+            // Get address using OpenStreetMap Nominatim API (Free & No API Key Needed)
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById("gps-address").innerHTML = data.address || "Not available";
-                    document.getElementById("gps-country").innerHTML = data.country || "Not available";
+                    document.getElementById("gps-address").innerHTML = data.display_name || "Not available";
+                    document.getElementById("gps-country").innerHTML = data.address.country || "Not available";
                 })
                 .catch(error => {
                     document.getElementById("gps-address").innerHTML = "Error fetching GPS location details.";
