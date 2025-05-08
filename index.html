@@ -7,42 +7,71 @@
 </head>
 <body>
     <h1>Your Location Details:</h1>
+
+    <h2>📍 GPS-Based Location (Accurate)</h2>
+    <p><strong>Coordinates:</strong> <span id="gps-coordinates">Detecting...</span></p>
+    <p><strong>Address:</strong> <span id="gps-address">Detecting...</span></p>
+    <p><strong>Country:</strong> <span id="gps-country">Detecting...</span></p>
+
+    <h2>🌐 IP-Based Location (Extra Info)</h2>
     <p><strong>IP Address:</strong> <span id="ip">Detecting...</span></p>
-    <p><strong>Coordinates:</strong> <span id="coordinates">Detecting...</span></p>
-    <p><strong>Address:</strong> <span id="address">Detecting...</span></p>
-    <p><strong>Place Name:</strong> <span id="place">Detecting...</span></p>
-    <p><strong>Country:</strong> <span id="country">Detecting...</span></p>
+    <p><strong>Estimated Location:</strong> <span id="ip-location">Detecting...</span></p>
+    <p><strong>ISP:</strong> <span id="isp">Detecting...</span></p>
     <p><strong>Timezone:</strong> <span id="timezone">Detecting...</span></p>
 
     <script>
-        function getIP() {
+        function getGPSLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showGPSPosition, showError);
+            } else {
+                document.getElementById("gps-coordinates").innerHTML = "Geolocation is not supported by your browser.";
+            }
+        }
+
+        function showGPSPosition(position) {
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
+            document.getElementById("gps-coordinates").innerHTML = `${lat}, ${lon}`;
+
+            // Get address using FreeWebAPI (No API key needed)
+            fetch(`https://freewebapi.com/api/location?lat=${lat}&lon=${lon}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("gps-address").innerHTML = data.address || "Not available";
+                    document.getElementById("gps-country").innerHTML = data.country || "Not available";
+                })
+                .catch(error => {
+                    document.getElementById("gps-address").innerHTML = "Error fetching GPS location details.";
+                });
+        }
+
+        function getIPLocation() {
             fetch("https://api.ipify.org?format=json")
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById("ip").innerHTML = data.ip;
-                    getLocation(data.ip);
+                    fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=95599cccebed43758369a16fe62da057&ip=${data.ip}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById("ip-location").innerHTML = `${data.city}, ${data.country_name}`;
+                            document.getElementById("isp").innerHTML = data.isp || "Not available";
+                            document.getElementById("timezone").innerHTML = data.time_zone.name || "Not available";
+                        })
+                        .catch(error => {
+                            document.getElementById("ip-location").innerHTML = "Error fetching IP location details.";
+                        });
                 })
                 .catch(error => {
                     document.getElementById("ip").innerHTML = "Error fetching IP.";
                 });
         }
 
-        function getLocation(ip) {
-            fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=95599cccebed43758369a16fe62da057&ip=${ip}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("coordinates").innerHTML = `${data.latitude}, ${data.longitude}`;
-                    document.getElementById("address").innerHTML = data.city || "Not available";
-                    document.getElementById("place").innerHTML = data.state_prov || "Not available";
-                    document.getElementById("country").innerHTML = data.country_name || "Not available";
-                    document.getElementById("timezone").innerHTML = data.time_zone.name || "Not available";
-                })
-                .catch(error => {
-                    document.getElementById("address").innerHTML = "Error fetching location details.";
-                });
+        function showError(error) {
+            document.getElementById("gps-coordinates").innerHTML = "Unable to retrieve GPS location.";
         }
 
-        getIP();
+        getGPSLocation();
+        getIPLocation();
     </script>
 </body>
 </html>
