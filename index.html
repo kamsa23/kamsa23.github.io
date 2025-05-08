@@ -1,7 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Your Coordinates</title>
+</head>
 <body>
-<h1>Location: Basywater</h1>
-<p>Welcome. Charlie</p>
+    <h1>Your Coordinates:</h1>
+    <p id="location">Detecting...</p>
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                document.getElementById("location").innerHTML = "Geolocation is not supported by your browser.";
+            }
+        }
+
+        function showPosition(position) {
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
+            document.getElementById("location").innerHTML = `Latitude: ${lat}, Longitude: ${lon}`;
+        }
+
+        function showError(error) {
+            document.getElementById("location").innerHTML = "Unable to retrieve location.";
+        }
+
+        getLocation();
+    </script>
 </body>
 </html>
