@@ -3,34 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced IP Lookup Tool</title>
+    <title>Multi-Tool IP & Location Lookup</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1, h2 { color: #333; }
+        .section { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; }
+        input, button { margin-top: 10px; padding: 8px; }
+    </style>
 </head>
 <body>
-    <h1>IP Lookup Tool</h1>
+    <h1>Multi-Tool IP & Location Lookup</h1>
 
-    <h2>🌐 Your IP Details</h2>
-    <p><strong>IP Address:</strong> <span id="user-ip">Detecting...</span></p>
-    <p><strong>Country:</strong> <span id="user-country">Detecting...</span></p>
-    <p><strong>City:</strong> <span id="user-city">Detecting...</span></p>
-    <p><strong>Region:</strong> <span id="user-region">Detecting...</span></p>
-    <p><strong>Latitude:</strong> <span id="user-lat">Detecting...</span> (Not accurate)</p>
-    <p><strong>Longitude:</strong> <span id="user-lon">Detecting...</span> (Not accurate)</p>
-    <p><strong>ISP:</strong> <span id="user-isp">Detecting...</span></p>
-    <p><strong>Timezone:</strong> <span id="user-timezone">Detecting...</span></p>
-    <p><strong>WHOIS Owner:</strong> <span id="user-owner">Detecting...</span></p>
+    <!-- Your IP Details -->
+    <div class="section">
+        <h2>🌐 Your IP Details</h2>
+        <p><strong>IP Address:</strong> <span id="user-ip">Detecting...</span></p>
+        <p><strong>Country:</strong> <span id="user-country">Detecting...</span></p>
+        <p><strong>City:</strong> <span id="user-city">Detecting...</span></p>
+        <p><strong>Region:</strong> <span id="user-region">Detecting...</span></p>
+        <p><strong>Latitude:</strong> <span id="user-lat">Detecting...</span> (Not accurate)</p>
+        <p><strong>Longitude:</strong> <span id="user-lon">Detecting...</span> (Not accurate)</p>
+        <p><strong>ISP:</strong> <span id="user-isp">Detecting...</span></p>
+        <p><strong>Timezone:</strong> <span id="user-timezone">Detecting...</span></p>
+    </div>
 
-    <h2>🔍 Custom IP Lookup</h2>
-    <input type="text" id="custom-ip" placeholder="Enter an IP address">
-    <button onclick="lookupCustomIP()">Lookup IP</button>
+    <!-- IP Lookup Tool -->
+    <div class="section">
+        <h2>🔍 IP Lookup Tool</h2>
+        <input type="text" id="custom-ip" placeholder="Enter an IP address">
+        <button onclick="lookupCustomIP()">Lookup IP</button>
+        <p><strong>Custom IP Country:</strong> <span id="custom-country">Waiting for input...</span></p>
+        <p><strong>Custom IP City:</strong> <span id="custom-city">Waiting for input...</span></p>
+        <p><strong>Custom IP Region:</strong> <span id="custom-region">Waiting for input...</span></p>
+        <p><strong>Custom IP Latitude:</strong> <span id="custom-lat">Waiting for input...</span> (Not accurate)</p>
+        <p><strong>Custom IP Longitude:</strong> <span id="custom-lon">Waiting for input...</span> (Not accurate)</p>
+        <p><strong>Custom IP ISP:</strong> <span id="custom-isp">Waiting for input...</span></p>
+        <p><strong>Custom IP Timezone:</strong> <span id="custom-timezone">Waiting for input...</span></p>
+    </div>
 
-    <p><strong>Custom IP Country:</strong> <span id="custom-country">Waiting for input...</span></p>
-    <p><strong>Custom IP City:</strong> <span id="custom-city">Waiting for input...</span></p>
-    <p><strong>Custom IP Region:</strong> <span id="custom-region">Waiting for input...</span></p>
-    <p><strong>Custom IP Latitude:</strong> <span id="custom-lat">Waiting for input...</span> (Not accurate)</p>
-    <p><strong>Custom IP Longitude:</strong> <span id="custom-lon">Waiting for input...</span> (Not accurate)</p>
-    <p><strong>Custom IP ISP:</strong> <span id="custom-isp">Waiting for input...</span></p>
-    <p><strong>Custom IP Timezone:</strong> <span id="custom-timezone">Waiting for input...</span></p>
-    <p><strong>Custom IP WHOIS Owner:</strong> <span id="custom-owner">Waiting for input...</span></p>
+    <!-- WHOIS Lookup -->
+    <div class="section">
+        <h2>🌍 WHOIS Lookup</h2>
+        <input type="text" id="domain" placeholder="Enter a domain (e.g., example.com)">
+        <button onclick="lookupWhois()">Lookup WHOIS</button>
+        <p><strong>Domain Owner:</strong> <span id="whois-owner">Waiting for input...</span></p>
+        <p><strong>Registrar:</strong> <span id="whois-registrar">Waiting for input...</span></p>
+        <p><strong>Creation Date:</strong> <span id="whois-created">Waiting for input...</span></p>
+    </div>
 
     <script>
         const ipinfoApiKey = "5fe40826b84458"; // IPinfo API Key
@@ -42,7 +61,6 @@
                 .then(data => {
                     document.getElementById("user-ip").innerHTML = data.ip;
                     lookupIPDetails(data.ip, "user");
-                    lookupWhoisDetails(data.ip, "user");
                 })
                 .catch(error => {
                     document.getElementById("user-ip").innerHTML = "Error fetching IP.";
@@ -66,24 +84,30 @@
                 });
         }
 
-        function lookupWhoisDetails(ip, type) {
-            fetch(`https://apifreaks.com/api/whois-ip-lookup?apiKey=${whoisApiKey}&ip=${ip}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById(`${type}-owner`).innerHTML = data.owner || "Not available";
-                })
-                .catch(error => {
-                    document.getElementById(`${type}-owner`).innerHTML = "Error fetching WHOIS details.";
-                });
-        }
-
         function lookupCustomIP() {
             let customIP = document.getElementById("custom-ip").value;
             if (customIP) {
                 lookupIPDetails(customIP, "custom");
-                lookupWhoisDetails(customIP, "custom");
             } else {
                 document.getElementById("custom-country").innerHTML = "Please enter an IP.";
+            }
+        }
+
+        function lookupWhois() {
+            let domain = document.getElementById("domain").value;
+            if (domain) {
+                fetch(`https://apifreaks.com/api/whois-ip-lookup?apiKey=${whoisApiKey}&domain=${domain}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById("whois-owner").innerHTML = data.owner || "Not available";
+                        document.getElementById("whois-registrar").innerHTML = data.registrar || "Not available";
+                        document.getElementById("whois-created").innerHTML = data.creation_date || "Not available";
+                    })
+                    .catch(error => {
+                        document.getElementById("whois-owner").innerHTML = "Error fetching WHOIS details.";
+                    });
+            } else {
+                document.getElementById("whois-owner").innerHTML = "Please enter a domain.";
             }
         }
 
