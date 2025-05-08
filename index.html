@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Tool IP & Location Lookup</title>
+    <title>Multi-Tool IP & WHOIS Lookup</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         h1, h2 { color: #333; }
@@ -12,7 +12,7 @@
     </style>
 </head>
 <body>
-    <h1>Multi-Tool IP & Location Lookup</h1>
+    <h1>Multi-Tool IP & WHOIS Lookup</h1>
 
     <!-- Your IP Details -->
     <div class="section">
@@ -53,7 +53,7 @@
 
     <script>
         const ipinfoApiKey = "5fe40826b84458"; // IPinfo API Key
-        const whoisApiKey = "d01b7e1766ca41109abf792e929c03f5"; // APIFreaks WHOIS API Key
+        const whoisApiKey = "at_zQ4ZxcQZB5yRYCBjXPZZu28ow5r24"; // WhoisXML API Key
 
         function getUserIP() {
             fetch("https://api.ipify.org?format=json")
@@ -96,12 +96,12 @@
         function lookupWhois() {
             let domain = document.getElementById("domain").value;
             if (domain) {
-                fetch(`https://apifreaks.com/api/whois-ip-lookup?apiKey=${whoisApiKey}&domain=${domain}`)
+                fetch(`https://www.whoisxmlapi.com/whoisserver/WhoisService?apiKey=${whoisApiKey}&domainName=${domain}&outputFormat=json`)
                     .then(response => response.json())
                     .then(data => {
-                        document.getElementById("whois-owner").innerHTML = data.owner || "Not available";
-                        document.getElementById("whois-registrar").innerHTML = data.registrar || "Not available";
-                        document.getElementById("whois-created").innerHTML = data.creation_date || "Not available";
+                        document.getElementById("whois-owner").innerHTML = data.WhoisRecord.registrantName || "Not available";
+                        document.getElementById("whois-registrar").innerHTML = data.WhoisRecord.registrarName || "Not available";
+                        document.getElementById("whois-created").innerHTML = data.WhoisRecord.createdDate || "Not available";
                     })
                     .catch(error => {
                         document.getElementById("whois-owner").innerHTML = "Error fetching WHOIS details.";
