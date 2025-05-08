@@ -28,9 +28,9 @@
                         .then(response => response.json())
                         .then(data => {
                             document.getElementById("ip-address").innerHTML = data.location.address || "Not available";
-                            document.getElementById("ip-city").innerHTML = data.city.name || "Not available";
-                            document.getElementById("ip-region").innerHTML = data.state.name || "Not available";
-                            document.getElementById("ip-country").innerHTML = data.country.name || "Not available";
+                            document.getElementById("ip-city").innerHTML = data.city || "Not available";
+                            document.getElementById("ip-region").innerHTML = data.state || "Not available";
+                            document.getElementById("ip-country").innerHTML = data.country || "Not available";
                             document.getElementById("ip-timezone").innerHTML = data.timezone.name || "Not available";
                         })
                         .catch(error => {
