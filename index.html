@@ -13,12 +13,11 @@
     <p><strong>Country:</strong> <span id="user-country">Detecting...</span></p>
     <p><strong>City:</strong> <span id="user-city">Detecting...</span></p>
     <p><strong>Region:</strong> <span id="user-region">Detecting...</span></p>
-    <p><strong>Latitude:</strong> <span id="user-lat">Detecting...</span></p>
-    <p><strong>Longitude:</strong> <span id="user-lon">Detecting...</span></p>
+    <p><strong>Latitude:</strong> <span id="user-lat">Detecting...</span> (Not accurate)</p>
+    <p><strong>Longitude:</strong> <span id="user-lon">Detecting...</span> (Not accurate)</p>
     <p><strong>ISP:</strong> <span id="user-isp">Detecting...</span></p>
     <p><strong>Timezone:</strong> <span id="user-timezone">Detecting...</span></p>
     <p><strong>WHOIS Owner:</strong> <span id="user-owner">Detecting...</span></p>
-    <p><strong>Network:</strong> <span id="user-network">Detecting...</span></p>
 
     <h2>🔍 Custom IP Lookup</h2>
     <input type="text" id="custom-ip" placeholder="Enter an IP address">
@@ -27,12 +26,11 @@
     <p><strong>Custom IP Country:</strong> <span id="custom-country">Waiting for input...</span></p>
     <p><strong>Custom IP City:</strong> <span id="custom-city">Waiting for input...</span></p>
     <p><strong>Custom IP Region:</strong> <span id="custom-region">Waiting for input...</span></p>
-    <p><strong>Custom IP Latitude:</strong> <span id="custom-lat">Waiting for input...</span></p>
-    <p><strong>Custom IP Longitude:</strong> <span id="custom-lon">Waiting for input...</span></p>
+    <p><strong>Custom IP Latitude:</strong> <span id="custom-lat">Waiting for input...</span> (Not accurate)</p>
+    <p><strong>Custom IP Longitude:</strong> <span id="custom-lon">Waiting for input...</span> (Not accurate)</p>
     <p><strong>Custom IP ISP:</strong> <span id="custom-isp">Waiting for input...</span></p>
     <p><strong>Custom IP Timezone:</strong> <span id="custom-timezone">Waiting for input...</span></p>
     <p><strong>Custom IP WHOIS Owner:</strong> <span id="custom-owner">Waiting for input...</span></p>
-    <p><strong>Custom IP Network:</strong> <span id="custom-network">Waiting for input...</span></p>
 
     <script>
         const ipinfoApiKey = "5fe40826b84458"; // IPinfo API Key
@@ -73,7 +71,6 @@
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById(`${type}-owner`).innerHTML = data.owner || "Not available";
-                    document.getElementById(`${type}-network`).innerHTML = data.network || "Not available";
                 })
                 .catch(error => {
                     document.getElementById(`${type}-owner`).innerHTML = "Error fetching WHOIS details.";
