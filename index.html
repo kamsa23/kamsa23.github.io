@@ -3,29 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Find Your Coordinates</title>
+    <title>Find Your Location</title>
 </head>
 <body>
-    <h1>Your Coordinates:</h1>
-    <p id="location">Detecting...</p>
+    <h1>Your Location Details:</h1>
+    <p><strong>Coordinates:</strong> <span id="coordinates">Detecting...</span></p>
+    <p><strong>Address:</strong> <span id="address">Detecting...</span></p>
+    <p><strong>Place Name:</strong> <span id="place">Detecting...</span></p>
+    <p><strong>Country:</strong> <span id="country">Detecting...</span></p>
 
     <script>
         function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition, showError);
             } else {
-                document.getElementById("location").innerHTML = "Geolocation is not supported by your browser.";
+                document.getElementById("coordinates").innerHTML = "Geolocation is not supported by your browser.";
             }
         }
 
         function showPosition(position) {
             let lat = position.coords.latitude;
             let lon = position.coords.longitude;
-            document.getElementById("location").innerHTML = `Latitude: ${lat}, Longitude: ${lon}`;
+            document.getElementById("coordinates").innerHTML = `${lat}, ${lon}`;
+
+            // Convert coordinates to full details using Geocode.xyz API
+            fetch(`https://geocode.xyz/${lat},${lon}?geoit=json`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("address").innerHTML = data.staddress || "Not available";
+                    document.getElementById("place").innerHTML = data.city || "Not available";
+                    document.getElementById("country").innerHTML = data.country || "Not available";
+                })
+                .catch(error => {
+                    document.getElementById("address").innerHTML = "Error fetching location details.";
+                });
         }
 
         function showError(error) {
-            document.getElementById("location").innerHTML = "Unable to retrieve location.";
+            document.getElementById("coordinates").innerHTML = "Unable to retrieve location.";
         }
 
         getLocation();
