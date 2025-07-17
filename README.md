@@ -1,1 +1,3 @@
-# ryn4profit.github.io
+# support:
+
+ # discord: therealryn
