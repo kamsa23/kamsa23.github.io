@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Downloads</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #1e1e2f;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+      animation: fadeIn 1s ease-in;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    li {
+      background: #2e2e3e;
+      margin: 10px 0;
+      padding: 15px 20px;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+      cursor: pointer;
+    }
+
+    li:hover {
+      background: #3e3e5e;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    #message {
+      margin-top: 30px;
+      font-size: 1.2em;
+      color: #90ee90;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Available Downloads</h1>
+  <ul id="downloadList">
+    <li data-file="DiscordBridge-1.0.0-ALPHA.jar">DiscordBridge-1.0.0-ALPHA.jar</li>
+    <li data-file="DiscordBridge-1.0.1-BETA.jar">DiscordBridge-1.0.1-BETA.jar</li>
+    <li data-file="DiscordBridge-1.1.0-STABLE.jar">DiscordBridge-1.1.0-STABLE.jar</li>
+  </ul>
+
+  <div id="message">Thanks for downloading! Redirecting...</div>
+
+  <script>
+    const items = document.querySelectorAll('li');
+    const message = document.getElementById('message');
+
+    items.forEach(item => {
+      item.addEventListener('click', () => {
+        const fileName = item.getAttribute('data-file');
+        const link = document.createElement('a');
+        link.href = fileName;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        message.style.display = 'block';
+
+        setTimeout(() => {
+          window.location.href = '../index.html';
+        }, 3000);
+      });
+    });
+  </script>
+</body>
+</html>
