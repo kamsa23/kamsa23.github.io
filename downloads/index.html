@@ -2,88 +2,134 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Downloads</title>
+  <title>Downloads | Kamsa's Plugins</title>
   <style>
-    body {
+    :root {
+      --primary: #1e90ff;
+      --background: #f4f9ff;
+      --text: #1e1e1e;
+      --nav-bg: #0f172a;
+      --footer-bg: #0f172a;
+    }
+
+    * {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #1e1e2f;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px;
-      animation: fadeIn 1s ease-in;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+    }
+
+    header, footer {
+      background-color: var(--nav-bg);
+      color: white;
+      padding: 1.5rem 2rem;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+    }
+
+    main {
+      padding: 3rem 2rem;
+      max-width: 1000px;
+      margin: auto;
     }
 
     h1 {
-      font-size: 2.5em;
-      margin-bottom: 20px;
+      font-size: 2.5rem;
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 2rem;
     }
 
-    ul {
-      list-style: none;
-      padding: 0;
-      width: 100%;
-      max-width: 600px;
+    .plugin-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
     }
 
-    li {
-      background: #2e2e3e;
-      margin: 10px 0;
-      padding: 15px 20px;
-      border-radius: 8px;
-      transition: background 0.3s ease;
-      cursor: pointer;
+    .plugin-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      transition: transform 0.2s ease;
     }
 
-    li:hover {
-      background: #3e3e5e;
+    .plugin-card:hover {
+      transform: translateY(-5px);
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    .plugin-card h2 {
+      color: var(--primary);
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
     }
 
-    #message {
-      margin-top: 30px;
-      font-size: 1.2em;
-      color: #90ee90;
-      display: none;
+    .plugin-card p {
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    .plugin-card a {
+      display: inline-block;
+      text-decoration: none;
+      background-color: var(--primary);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .plugin-card a:hover {
+      background-color: #1c7fd1;
     }
   </style>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      include("header", "/header.html");
+      include("footer", "/footer.html");
+    });
+
+    function include(id, file) {
+      fetch(file)
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById(id).innerHTML = html;
+        })
+        .catch(err => console.error(`Failed to load ${file}:`, err));
+    }
+  </script>
 </head>
 <body>
-  <h1>Available Downloads</h1>
-  <ul id="downloadList">
-    <li data-file="DiscordBridge-1.0.0-ALPHA.jar">DiscordBridge-1.0.0-ALPHA.jar</li>
-  </ul>
+  <div id="header"></div>
 
-  <div id="message">Thanks for downloading! Redirecting...</div>
+  <main>
+    <h1>Plugin Downloads</h1>
 
-  <script>
-    const items = document.querySelectorAll('li');
-    const message = document.getElementById('message');
+    <div class="plugin-list">
+      <div class="plugin-card">
+        <h2>DiscordBridge</h2>
+        <p>A simple plugin to link your Minecraft server to your Discord server. Currently in ALPHA. Fast, lightweight, and ideal for staff alerts or bridging chats.</p>
+        <a href="/downloads/DiscordBridge-1.0.0-ALPHA.jar" download>Download latest version!</a>
+      </div>
+    </div>
+  </main>
 
-    items.forEach(item => {
-      item.addEventListener('click', () => {
-        const fileName = item.getAttribute('data-file');
-        const link = document.createElement('a');
-        link.href = fileName;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        message.style.display = 'block';
-
-        setTimeout(() => {
-          window.location.href = '../index.html';
-        }, 3000);
-      });
-    });
-  </script>
+  <div id="footer"></div>
 </body>
 </html>
