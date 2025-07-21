@@ -1,106 +1,138 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>COPY PASTE: •</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WELCOME!</title></title>
+  <title>Kamsa's Plugins</title>
   <style>
     body {
+    :root {
+      --primary: #1e90ff;
+      --background: #f4f9ff;
+      --text: #1e1e1e;
+      --nav-bg: #0f172a;
+      --footer-bg: #0f172a;
+    }
+
+    * {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #1e1e1e;
-      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
+      animation: fadeIn 2s ease-in;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    .container {
-      background: #2b2b2b;
-      padding: 30px 40px;
-      border-radius: 10px;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
-      text-align: center;
-      width: 90%;
-      max-width: 600px;
+    h1 {
+      font-size: 3em;
+      animation: slideDown 1s ease-out;
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--background);
+      color: var(--text);
     }
 
-    h2 {
-      margin-bottom: 20px;
-      font-size: 1.8em;
-      color: #00aaff;
-    }
-
-    textarea {
-      width: 100%;
-      padding: 12px;
-      margin: 12px 0;
-      font-size: 1.1em;
-      background: #1e1e1e;
-      color: #fff;
-      border: 1px solid #444;
-      border-radius: 6px;
-      resize: none;
-      transition: border-color 0.3s ease;
-    }
-
-    textarea:focus {
-      outline: none;
-      border-color: #0077ff;
-    }
-
-    button {
-      margin-top: 10px;
+    a {
+      margin-top: 20px;
       padding: 10px 20px;
-      background: #0077ff;
+      background: white;
+      color: #764ba2;
+    header, footer {
+      background-color: var(--nav-bg);
       color: white;
-      font-size: 1em;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.3s ease;
+      padding: 1.5rem 2rem;
+      text-align: center;
     }
 
-    button:hover {
-      background: #005edb;
+    nav a {
+      color: white;
+      margin: 0 1rem;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+      font-weight: 500;
     }
 
-    #outputText {
-      margin-top: 15px;
-      background: #121212;
+    a:hover {
+      transform: scale(1.1);
+    nav a:hover {
+      color: var(--primary);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    main {
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    h1 {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    a.button {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background-color: var(--primary);
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+
+    a.button:hover {
+      background-color: #1c7fd1;
     }
   </style>
-</head>
-<body>
-
-  <div class="container">
-    <h2>Small Caps Text Converter</h2>
-    <textarea id="inputText" rows="3" placeholder="Enter your text here..."></textarea>
-    <button onclick="convertText()">Convert</button>
-    <textarea id="outputText" rows="3" placeholder="Converted text will appear here..." readonly></textarea>
-  </div>
-
   <script>
-    const smallCapsMap = {
-      a: 'ᴀ', b: 'ʙ', c: 'ᴄ', d: 'ᴅ', e: 'ᴇ', f: 'ғ',
-      g: 'ɢ', h: 'ʜ', i: 'ɪ', j: 'ᴊ', k: 'ᴋ', l: 'ʟ',
-      m: 'ᴍ', n: 'ɴ', o: 'ᴏ', p: 'ᴘ', q: 'ǫ', r: 'ʀ',
-      s: 's', t: 'ᴛ', u: 'ᴜ', v: 'ᴠ', w: 'ᴡ', x: 'x',
-      y: 'ʏ', z: 'ᴢ'
-    };
+    window.addEventListener("DOMContentLoaded", () => {
+      include("header", "/header.html");
+      include("footer", "/footer.html");
+    });
 
-    function convertText() {
-      const input = document.getElementById("inputText").value;
-      let output = '';
-
-      for (let char of input) {
-        const lower = char.toLowerCase();
-        output += smallCapsMap[lower] || char;
-      }
-
-      document.getElementById("outputText").value = output;
+    function include(id, file) {
+      fetch(file)
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById(id).innerHTML = html;
+        })
+        .catch(err => console.error(`Failed to load ${file}:`, err));
     }
   </script>
+</head>
+<body>
+  <h1>Welcome to kamsa23's plugins!</h1>
+  <h2>looking for a high quality lifesteal server? IP: cheesesmp.net</h2>
+  <a href="downloads/index.html">Downloads</a>
+  <div id="header"></div>
 
+  <main>
+    <h1>Kamsa’s Plugins</h1>
+    <p>Welcome to the official site for all of Kamsa’s Minecraft plugins. Clean, powerful, and made for your server's success.</p>
+    <a class="button" href="/downloads/index.html">View Plugins →</a>
+  </main>
+
+  <div id="footer"></div>
 </body>
 </html>
