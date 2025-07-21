@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Small Caps Text Converter</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #1e1e1e;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    textarea, input {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 1.2em;
+      background: #2e2e2e;
+      color: #fff;
+      border: 1px solid #444;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #0077ff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #005edb;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Small Caps Text Converter</h2>
+
+  <textarea id="inputText" rows="3" placeholder="Enter your text here..."></textarea>
+  <button onclick="convertText()">Convert</button>
+  <textarea id="outputText" rows="3" placeholder="Converted text will appear here..." readonly></textarea>
+
+  <script>
+    const smallCapsMap = {
+      a: 'ᴀ', b: 'ʙ', c: 'ᴄ', d: 'ᴅ', e: 'ᴇ', f: 'ғ',
+      g: 'ɢ', h: 'ʜ', i: 'ɪ', j: 'ᴊ', k: 'ᴋ', l: 'ʟ',
+      m: 'ᴍ', n: 'ɴ', o: 'ᴏ', p: 'ᴘ', q: 'ǫ', r: 'ʀ',
+      s: 's', t: 'ᴛ', u: 'ᴜ', v: 'ᴠ', w: 'ᴡ', x: 'x',
+      y: 'ʏ', z: 'ᴢ'
+    };
+
+    function convertText() {
+      const input = document.getElementById("inputText").value;
+      let output = '';
+
+      for (let char of input) {
+        const lower = char.toLowerCase();
+        output += smallCapsMap[lower] || char;
+      }
+
+      document.getElementById("outputText").value = output;
+    }
+  </script>
+
+</body>
+</html>
